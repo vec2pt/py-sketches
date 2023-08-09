@@ -31,7 +31,9 @@ class TravellingSalesmanProblem:
     def minimum_path(self) -> list:
         return self._minimum_path
 
-    def _recursion_solution(self, point, distance, input_ls, output_ls=[]):
+    def _recursion_solution(self, point, distance, input_ls, output_ls=None):
+        if output_ls is None:
+            output_ls = []
         if input_ls:
             for i in input_ls:
                 new_input_ls = input_ls.copy()
@@ -55,9 +57,9 @@ class TravellingSalesmanProblem:
 
 
 if __name__ == "__main__":
-    points = [[random.random(), random.random()] for _ in range(10)]
+    pts = [[random.random(), random.random()] for _ in range(10)]
 
-    tsp = TravellingSalesmanProblem(points)
+    tsp = TravellingSalesmanProblem(pts)
     tsp.calculate()
 
     plt.plot(*zip(*tsp.minimum_path), marker="o", color="r")
