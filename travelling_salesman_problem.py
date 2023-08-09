@@ -31,22 +31,27 @@ class TravellingSalesmanProblem:
     def minimum_path(self) -> list:
         return self._minimum_path
 
-    def recursion_solution(self, point, distance, input_ls, output_ls=[]):
+    def _recursion_solution(self, point, distance, input_ls, output_ls=[]):
         if input_ls:
             for i in input_ls:
                 new_input_ls = input_ls.copy()
                 new_input_ls.remove(i)
-                self.recursion_solution(
-                    i, distance + distance2pt(point, i), new_input_ls, output_ls + [i]
+                self._recursion_solution(
+                    i,
+                    distance + distance2pt(point, i),
+                    new_input_ls,
+                    output_ls + [i],
                 )
         else:
             new_distance = distance + distance2pt(point, self._points[0])
             if new_distance < self._minimum_distance:
                 self._minimum_distance = new_distance
-                self._minimum_path = [self._points[0]] + output_ls + [self._points[0]]
+                self._minimum_path = (
+                    [self._points[0]] + output_ls + [self._points[0]]
+                )
 
     def calculate(self):
-        self.recursion_solution(self._points[0], 0, self._points[1:])
+        self._recursion_solution(self._points[0], 0, self._points[1:])
 
 
 if __name__ == "__main__":
