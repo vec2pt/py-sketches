@@ -1,5 +1,5 @@
 """
-20240803
+20230803
 
 Tower of Hanoi (Recursive solution)
 
@@ -38,7 +38,8 @@ class TowerOfHanoi:
         del self._map[from_peg][-1]
         print(self)
         print(
-            f"Move disk {self._map[to_peg][-1]} from peg {from_peg + 1} to peg {to_peg+ 1}."
+            f"Move disk {self._map[to_peg][-1]} from peg {from_peg + 1} to peg \
+{to_peg+ 1}."
         )
 
     def _hanoi(self, q, from_peg, buff_peg, to_peg):
