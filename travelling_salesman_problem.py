@@ -10,7 +10,10 @@ Links:
 import math
 import random
 
+import matplotlib
 import matplotlib.pyplot as plt
+
+matplotlib.use("TkAgg")
 
 
 def distance2pt(p1, p2):
@@ -62,5 +65,6 @@ if __name__ == "__main__":
     tsp = TravellingSalesmanProblem(pts)
     tsp.calculate()
 
-    plt.plot(*zip(*tsp.minimum_path), marker="o", color="r")
+    plt.plot(*zip(*tsp.minimum_path), marker="o", color="k")
+    plt.axis("off")
     plt.show()
