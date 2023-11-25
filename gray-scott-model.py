@@ -99,6 +99,5 @@ if __name__ == "__main__":
     for i in range(1000):
         gsm.compute()
 
-    print(np.min(gsm.v), np.max(gsm.v))
     plt.imshow(gsm.v, cmap="Greys")
     plt.show()
