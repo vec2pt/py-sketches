@@ -11,7 +11,7 @@ Links:
 
 
 import matplotlib
-import matplotlib.image
+import matplotlib.animation as animation
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy import ndimage
@@ -43,8 +43,12 @@ class GrayScottModel:
             k (float, optional): Kill rate. Defaults to 0.057.
             initiate_randomly (bool, optional): Initiate randomly. Defaults to False.
         """
-        self._u = np.ones((height, width))
-        self._v = np.zeros((height, width))
+        self._width = width
+        self._height = height
+        self._d_u = d_u
+        self._d_v = d_v
+        self._f = f
+        self._k = k
         if initiate_randomly:
             mask = np.random.random((height, width))
             mask = mask < 0.3
@@ -53,13 +57,13 @@ class GrayScottModel:
             mask[
                 height // 3 + 1 : -height // 3, width // 3 + 1 : -width // 3
             ] = True
-        self._u[mask] = 0.50
-        self._v[mask] = 0.25
+        self._apply_mask(mask)
 
-        self._d_u = d_u
-        self._d_v = d_v
-        self._f = f
-        self._k = k
+    def _apply_mask(self, mask):
+        self._u = np.ones((self._height, self._width))
+        self._v = np.zeros((self._height, self._width))
+        self._u[mask] = 0
+        self._v[mask] = 1
 
     @property
     def u(self) -> np.ndarray:
@@ -79,6 +83,20 @@ class GrayScottModel:
         """
         return (self._v - self._v.min()) / (self._v.max() - self._v.min())
 
+    @classmethod
+    def from_mask(
+        cls,
+        mask: np.ndarray,
+        d_u: float = 0.01,
+        d_v: float = 0.005,
+        f: float = 0.029,
+        k: float = 0.057,
+    ):
+        height, width = mask.shape
+        gray_scott_model = cls(width, height, d_u, d_v, f, k)
+        gray_scott_model._apply_mask(mask)
+        return gray_scott_model
+
     def compute(self):
         """Compute Gray-Scott Model"""
         self._u += (
@@ -94,10 +112,18 @@ class GrayScottModel:
 
 
 if __name__ == "__main__":
+    fig, ax = plt.subplots()
+    ims = []
+
     gsm = GrayScottModel(100, 100, 0.1, 0.05)
 
-    for i in range(1000):
+    for i in range(5000):
         gsm.compute()
+        if i % 100 == 0 and i != 0:
+            im = ax.imshow(gsm.v, cmap="Greys", animated=True)
+            ims.append([im])
 
-    plt.imshow(gsm.v, cmap="Greys")
+    ani = animation.ArtistAnimation(
+        fig, ims, interval=50, blit=True, repeat_delay=1000
+    )
     plt.show()
