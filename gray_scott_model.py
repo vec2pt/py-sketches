@@ -92,6 +92,18 @@ class GrayScottModel:
         f: float = 0.029,
         k: float = 0.057,
     ):
+        """Create Gray-Scott Model from mask.
+
+        Args:
+            mask (np.ndarray): Mask.
+            d_u (float, optional): U diffusion rate. Defaults to 0.01.
+            d_v (float, optional): V diffusion rate. Defaults to 0.005.
+            f (float, optional): Feed rate. Defaults to 0.029.
+            k (float, optional): Kill rate. Defaults to 0.057.
+
+        Returns:
+            GrayScottModel: Gray-Scott Model
+        """
         height, width = mask.shape
         gray_scott_model = cls(width, height, d_u, d_v, f, k)
         gray_scott_model._apply_mask(mask)
