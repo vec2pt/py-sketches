@@ -40,8 +40,8 @@ def _create_sound_data(
 def generate_img(
     bytebeat_func: Callable,
     filename: str | Path = "bytebeat.png",
-    width: int = 800,
-    height: int = 600,
+    width: int = 512,
+    height: int = 512,
     scale: int = 256,
     sampling_rate: int = 8000,
 ) -> None:
