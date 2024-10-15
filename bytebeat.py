@@ -31,10 +31,8 @@ def _create_sound_data(
         np.ndarray: Sound data
     """
     t = np.arange(0, sampling_rate * duration) / sampling_rate
-    sound_data = np.array(
-        [bytebeat_func(int(i * sampling_rate)) for i in t], dtype=np.uint8
-    )
-    return sound_data
+    sound_data = np.array([bytebeat_func(int(i * sampling_rate)) for i in t])
+    return sound_data.astype(np.uint8)
 
 
 def generate_img(
