@@ -75,10 +75,14 @@ def tiles_system_24(
         tile_group.append(dw.Circle(1, 0, 0.1, stroke="none", fill="black"))
         defs.append(tile_group)
 
-    indexes = [(a, b) for b in range(h_tiles_count) for a in range(w_tiles_count)]
+    indexes = [
+        (a, b) for b in range(h_tiles_count) for a in range(w_tiles_count)
+    ]
 
     for i, j in indexes:
-        tile_index = random.choices(range(len(TILES)), [t["weight"] for t in TILES])[0]
+        tile_index = random.choices(
+            range(len(TILES)), [t["weight"] for t in TILES]
+        )[0]
         rotation = random.randint(0, 3) * 90
         x_scale = tile_size / 2 * random.choice([-1, 1])
         y_scale = tile_size / 2 * random.choice([-1, 1])
