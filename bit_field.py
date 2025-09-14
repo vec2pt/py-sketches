@@ -1,16 +1,17 @@
-"""
-20250216
+"""Bit Field.
 
-Bit Field
+20250216
 
 Inspiration
     https://inventwithpython.com/blog/2021/08/02/algorithmic-art-with-the-bitfielddraw-module/
     https://threadreaderapp.com/thread/1378106731386040322?refresh=1627428184
 """
 
-import numpy as np
-from PIL import Image
 from typing import Callable
+
+import numpy as np
+
+from PIL import Image
 
 
 def bit_field(
@@ -18,7 +19,7 @@ def bit_field(
     func: Callable[[np.ndarray, np.ndarray], np.ndarray],
     scale: int = 1,
 ) -> Image.Image:
-    """Bit Field
+    """Bit Field.
 
     Args:
         size (tuple[int, int]): Image size. A 2-tuple, containing (width, height).
@@ -27,6 +28,7 @@ def bit_field(
 
     Returns:
         Image.Image: Invader image.
+
     """
     x, y = np.mgrid[0 : size[1] // scale, 0 : size[0] // scale]
     mask = func(x, y) == 0  # False is black
@@ -41,7 +43,7 @@ def bit_field_rgb(
     func_b: Callable[[np.ndarray, np.ndarray], np.ndarray],
     scale: int = 1,
 ) -> Image.Image:
-    """Bit Field (RGB)
+    """Bit Field (RGB).
 
     Args:
         size (tuple[int, int]): Image size. A 2-tuple, containing (width, height).
@@ -52,6 +54,7 @@ def bit_field_rgb(
 
     Returns:
         Image.Image: Invader image.
+
     """
     x, y = np.mgrid[0 : size[1] // scale, 0 : size[0] // scale]
     mask_r = func_r(x, y) == 0
