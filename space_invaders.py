@@ -1,13 +1,13 @@
-"""Space Invaders Generator.
-
+"""
 20241204
+
+Space Invaders Generator
 
 Inspiration
     https://github.com/0x00/spaceinvadergenerator
 """
 
 import numpy as np
-
 from PIL import Image
 
 
@@ -27,7 +27,6 @@ def space_invader(
 
     Returns:
         Image.Image: Invader image.
-
     """
     map_i = np.random.choice(
         np.arange(len(palette)), (int(size[0] / 2), size[1]), p=weights

@@ -7,12 +7,11 @@ Links:
     https://en.wikipedia.org/wiki/Chladni%27s_law
 """
 
-import matplotlib
-import matplotlib.pyplot as plt
 import numpy as np
+from PIL import Image
 
 
-def chlandni_func(
+def chladni_func(
     x: np.ndarray,
     y: np.ndarray,
     m: float = 1,
@@ -20,7 +19,7 @@ def chlandni_func(
     a: float = 1,
     b: float = 1,
 ) -> np.ndarray:
-    """Chlandni function
+    """Chladni function
 
     Args:
         x (np.ndarray): X array
@@ -53,7 +52,7 @@ def min_max_scaling(array: np.ndarray) -> np.ndarray:
     return (array - min_val) / (max_val - min_val)
 
 
-def chlandni(
+def chladni(
     width: int = 512,
     height: int = 512,
     m: float = 1,
@@ -61,7 +60,7 @@ def chlandni(
     a: float = 1,
     b: float = 1,
 ) -> np.ndarray:
-    """Chlandni
+    """Chladni
 
     Args:
         width (int, optional): Img width. Defaults to 512.
@@ -76,12 +75,12 @@ def chlandni(
     """
     shape = (height, width)
     x, y = np.meshgrid(
-        np.linspace(0.0, 1.0, shape[1]),
-        np.linspace(0.0, 1.0, shape[0]),
+        np.linspace(-1.0, 1.0, shape[1]),
+        np.linspace(-1.0, 1.0, shape[0]),
     )
-    results = chlandni_func(x, y, m=m, n=n, a=a, b=b)
+    results = chladni_func(x, y, m=m, n=n, a=a, b=b)
     results = abs(min_max_scaling(results) - 1)  # Inversion
-    results = results**10  # Contrast
+    results = results**7  # Contrast
 
     # Simple sand effect
     random_array = np.random.random(shape)
@@ -91,8 +90,5 @@ def chlandni(
 
 
 if __name__ == "__main__":
-    matplotlib.use("TkAgg")
-
-    output = chlandni(m=3, n=2, a=-1.29, b=2.26)
-    plt.imshow(output, cmap="gray")
-    plt.show()
+    output = chladni(m=3, n=2, a=-1.29, b=2.26)
+    Image.fromarray(output, "L").save("chladni.png")

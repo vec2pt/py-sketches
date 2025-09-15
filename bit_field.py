@@ -1,6 +1,7 @@
-"""Bit Field.
-
+"""
 20250216
+
+Bit Field
 
 Inspiration
     https://inventwithpython.com/blog/2021/08/02/algorithmic-art-with-the-bitfielddraw-module/
@@ -10,7 +11,6 @@ Inspiration
 from typing import Callable
 
 import numpy as np
-
 from PIL import Image
 
 
@@ -27,8 +27,7 @@ def bit_field(
         scale (int, optional): Pixel scale. Defaults to 1.
 
     Returns:
-        Image.Image: Invader image.
-
+        Image.Image: Bit field image.
     """
     x, y = np.mgrid[0 : size[1] // scale, 0 : size[0] // scale]
     mask = func(x, y) == 0  # False is black
@@ -54,7 +53,6 @@ def bit_field_rgb(
 
     Returns:
         Image.Image: Invader image.
-
     """
     x, y = np.mgrid[0 : size[1] // scale, 0 : size[0] // scale]
     mask_r = func_r(x, y) == 0
