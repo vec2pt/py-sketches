@@ -46,40 +46,26 @@ def get_char_size(
     return (np.max(right) + kerning_offset, np.max(bottom) + leading_offset)
 
 
-def measure_chars(
-    chars: str,
+def ger_char_brightness(
+    char: str,
     font: ImageFont.ImageFont | ImageFont.FreeTypeFont,
     char_size: tuple[int, int],
-    inversion: bool = False,
-) -> np.ndarray:
-    """Measures characters.
+) -> np.floating:
+    """Measure character brightness.
 
     Args:
-        chars: Characters
+        char: Character
         font: Font
         char_size: Font character size
-        inversion: Measurement inversion.
 
     Returns:
-        Measurement
+        Brightness
     """
-
-    def _measure_char(
-        char: str,
-        font: ImageFont.ImageFont | ImageFont.FreeTypeFont,
-        char_size: tuple[int, int],
-    ) -> tuple[np.floating, np.floating]:
-        image = Image.new("L", char_size)
-        draw = ImageDraw.Draw(image)
-        draw.text((0, 0), text=char, fill=255, font=font)
-        image_array = np.array(image)
-        brightness, contrast = np.mean(image_array), np.std(image_array)
-        return brightness, contrast
-
-    measurement = np.array([_measure_char(c, font, char_size) for c in chars]).T
-    measurement = measurement if inversion else -measurement
-    measurement = np.apply_along_axis(min_max_scaling, 1, measurement)
-    return measurement
+    image = Image.new("L", char_size)
+    draw = ImageDraw.Draw(image)
+    draw.text((0, 0), text=char, fill=255, font=font)
+    image_array = np.array(image)
+    return np.mean(image_array)
 
 
 def ascii_art(
@@ -108,14 +94,12 @@ def ascii_art(
         ASCII art string / image
     """
     char_size = get_char_size(font, kerning_offset, leading_offset)
-
-    chars_brightness, chars_contrast = measure_chars(
-        chars, font, char_size, inversion
+    measurement = np.array(
+        [ger_char_brightness(c, font, char_size) for c in chars]
     )
-
-    # Brightness as a measure.
-    # Can be used contrast, their combinations, or something else.
-    chars_vals = chars_brightness
+    chars_brightness = min_max_scaling(
+        measurement if inversion else -measurement
+    )
 
     # Image processing
     image_width, image_height = image.size
@@ -128,7 +112,7 @@ def ascii_art(
 
     # Image representation as a matrix of symbol indices.
     indices = np.abs(
-        scaled.reshape(*scaled.shape, 1) - chars_vals.reshape(1, 1, -1)
+        scaled.reshape(*scaled.shape, 1) - chars_brightness.reshape(1, 1, -1)
     ).argmin(axis=2)
 
     # String output
