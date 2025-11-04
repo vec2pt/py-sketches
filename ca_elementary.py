@@ -3,6 +3,9 @@
 
 Elementary cellular automaton.
 
+Links:
+    https://en.wikipedia.org/wiki/Elementary_cellular_automaton
+
 """
 
 import numpy as np
@@ -33,7 +36,8 @@ def eca(initial: np.ndarray, steps: int = 128, rule: int = 105) -> np.ndarray:
 if __name__ == "__main__":
     size = 128
     rule = 105
-    initial_array = np.random.randint(0, 2, size=size, dtype=np.uint8)
-    grid = eca(initial=initial_array, steps=size, rule=rule)
-    img = Image.fromarray(grid * 255)
-    ImageOps.scale(img, 4, Image.Resampling.NEAREST).save("eca.png")
+    initial = np.random.randint(0, 2, size=size, dtype=np.uint8)
+    grid = eca(initial=initial, steps=size, rule=rule)
+    img = Image.fromarray((1 - grid) * 255)
+    img = ImageOps.scale(img, 4, Image.Resampling.NEAREST)
+    img.save(f"eca-rule{rule}.png")

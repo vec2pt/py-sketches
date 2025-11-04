@@ -1,7 +1,10 @@
 """
 20251103
 
-Reversible cellular automaton.
+Reversible cellular automaton / Second-order cellular automaton.
+
+Links:
+    https://en.wikipedia.org/wiki/Second-order_cellular_automaton
 
 """
 
@@ -21,10 +24,9 @@ def rca(initial: np.ndarray, steps: int = 128, rule: int = 105) -> np.ndarray:
         Reversible cellular automaton grid.
 
     """
-    width = len(initial)
-    grid = np.zeros((steps + 1, width), dtype=np.uint8)
+    grid = np.zeros((steps + 1, len(initial)), dtype=np.uint8)
+    grid[0] = np.random.randint(0, 2, len(initial), dtype=np.uint8)
     grid[1] = initial
-
     for t in range(2, steps + 1):
         prev = grid[t - 1]
         pattern = (np.roll(prev, 1) << 2) | (prev << 1) | np.roll(prev, -1)
@@ -34,8 +36,9 @@ def rca(initial: np.ndarray, steps: int = 128, rule: int = 105) -> np.ndarray:
 
 if __name__ == "__main__":
     size = 128
-    rule = 105
-    initial_array = np.random.randint(0, 2, size=size, dtype=np.uint8)
-    grid = rca(initial=initial_array, steps=size, rule=rule)
-    img = Image.fromarray(grid * 255)
-    ImageOps.scale(img, 4, Image.Resampling.NEAREST).save("rca.png")
+    rule = 90
+    initial = np.random.randint(0, 2, size=size, dtype=np.uint8)
+    grid = rca(initial=initial, steps=size, rule=rule)
+    img = Image.fromarray((1 - grid) * 255)
+    img = ImageOps.scale(img, 4, Image.Resampling.NEAREST)
+    img.save(f"rca-rule{rule}.png")
