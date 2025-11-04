@@ -64,18 +64,20 @@ if __name__ == "__main__":
     # Classic example
     rule = 0b001100  # 2, 3
     initial = np.random.randint(0, 2, size=size, dtype=np.uint8)
-    grid = tca(initial, size, radius=2, rule=lambda x: (rule >> x) & 1)
+    grid = tca(
+        initial=initial, steps=size, radius=2, rule=lambda x: (rule >> x) & 1
+    )
     img = Image.fromarray((1 - grid) * 255)
     img = ImageOps.scale(img, 4, Image.Resampling.NEAREST)
     img.save(f"tca-0b{rule:b}.png")
 
-    # Example with 'codec'
+    # Example with 'code'
     code = 777
     k = 3
     radius = 1
     initial = np.random.randint(0, k, size=size, dtype=np.uint8)
     grid = tca(
-        initial,
+        initial=initial,
         steps=size,
         radius=radius,
         rule=lambda x: decode_code(code, k, radius)[x],

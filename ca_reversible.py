@@ -4,6 +4,7 @@
 Reversible cellular automaton / Second-order cellular automaton.
 
 Links:
+    https://en.wikipedia.org/wiki/Reversible_cellular_automaton
     https://en.wikipedia.org/wiki/Second-order_cellular_automaton
 
 """
